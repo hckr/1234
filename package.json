@@ -1,0 +1,16 @@
+{
+  "name": "1234",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hckr/1234.git"
+  },
+  "author": "Luke",
+  "license": "MIT",
+  "devDependencies": {
+    "uglify-js": "github:mishoo/UglifyJS2#harmony"
+  },
+  "scripts": {
+    "minify": "./node_modules/uglify-js/bin/uglifyjs 1234.js -o 1234.js.min && echo -n 'Size after minification: ' && cat 1234.js.min | wc -c"
+  }
+}
