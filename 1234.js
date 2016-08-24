@@ -104,8 +104,10 @@ interval(() => {
         {
             paused = true;
             drawingLoop();
-            alert('You lost.');
-            location.reload();
+            timeout(() => {
+                alert('You lost.');
+                location.reload();
+            }, 99);
         }
         e.x += e.v;
         return 0 < e.x && e.x < width;
