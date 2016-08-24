@@ -16,7 +16,6 @@ let d = document,
     fullSecondsElapsed = 0,
     keyStates = {},
     context,
-    gameLoop,
     drawingLoop,
     enemyLoop,
     paused = false,
@@ -50,6 +49,7 @@ d.onkeyup = (e) => {
 }
 
 enemyLoop = () => {
+    timeout(enemyLoop, newEnemyInterval);
     if(paused) return;
     let randomV = random() * 2 + 2,
         randomH = random() * 100 + 100;
@@ -58,7 +58,6 @@ enemyLoop = () => {
     } else {
         enemies.push({ x: 0, h: randomH, v: randomV });
     }
-    timeout(enemyLoop, newEnemyInterval);
 };
 timeout(enemyLoop, newEnemyInterval);
 
