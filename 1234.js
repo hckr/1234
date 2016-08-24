@@ -103,10 +103,9 @@ interval(() => {
             (playerPosY >= height - e.h && playerPosY >= height - e.h)))
         {
             paused = true;
-            setTimeout(() => {
-                alert('You lost.');
-                location.reload();
-            }, 100);
+            drawingLoop();
+            alert('You lost.');
+            location.reload();
         }
         e.x += e.v;
         return 0 < e.x && e.x < width;
