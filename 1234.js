@@ -12,15 +12,27 @@ let d = document,
     playerVy = 0,
     jumpVy = 10,
     gravity = 0.2,
-    enemies = [],
-    startTimestamp = +new Date(),
+    enemies = [], // { x: posX, h: height, v: speed }
     fullSecondsElapsed = 0,
     keyStates = {},
     context,
-    drawingLoop;
+    gameLoop,
+    drawingLoop,
+    paused = false,
+    newEnemyInterval = 3000,
+    random=Math.random,
+    abs=Math.abs;
+
+
+onblur = () => { paused = true; }
+onfocus = () => { paused = false; }
 
 setInterval(() => {
-    fullSecondsElapsed = parseInt((new Date() - startTimestamp) / 1000);
+    if(paused) return;
+    fullSecondsElapsed += 1;
+    if(fullSecondsElapsed % 5 == 0 && newEnemyInterval > 100) {
+        newEnemyInterval -= 100;
+    }
 }, 1000);
 
 d.body.style.background='#333';
@@ -35,15 +47,29 @@ d.onkeyup = (e) => {
 }
 
 setInterval(() => {
+    if(paused) return;
+    let randomV = random() * 2 + 2,
+        randomH = random() * 100 + 100;
+    if(random() < 0.5) {
+        enemies.push({ x: width + 1, h: randomH, v: -randomV });
+    } else {
+        enemies.push({ x: -1, h: randomH, v: randomV });
+    }
+}, newEnemyInterval);
+
+gameLoop = setInterval(() => {
+    if(paused) return;
+
     if(keyStates[37]) {
-        playerVx -= 1;
+        if((playerVx -= 1) < -10) {
+            playerVx = -10;
+        }
     }
     if(keyStates[39]) {
-        playerVx += 1
+        if((playerVx += 1) > 10) {
+            playerVx = 10;
+        }
     }
-
-    if(playerVx < -10) playerVx = -10;
-    if(playerVy > 10) playerVx = 10;
 
     playerVx *= 0.9;
     playerPosX += playerVx;
@@ -66,17 +92,36 @@ setInterval(() => {
         playerPosY = maxPosBottom;
         playerVy = 0.8 * -playerVy;
     }
+
+    enemies.filter((e) => {
+        if(abs(e.x - playerPosX) < circleRadius &&
+           ((height - e.h - playerPosY < circleRadius && Math.sqrt(abs(e.x - playerPosX) + abs(height - e.h - playerPosY)) < circleRadius) ||
+            (playerPosY >= height - e.h && playerPosY >= height - e.h)))
+        {
+            paused = true;
+            setTimeout(() => {
+                alert('You lost.');
+                location.reload();
+            }, 100);
+        }
+        e.x += e.v;
+        return -1 < e.x && e.x < width + 1;
+    });
 }, 15);
 
 f='fillStyle';
 drawingLoop = () => {
     _.width = _.width;
-    context[f] = '#8f8';
+    context[f] = '#5f5';
     context.arc(playerPosX, playerPosY, circleRadius, 0, 2 * Math.PI);
     context.fill();
     context.font = '24px monospace'
-    context[f] = 'black';
+    context[f] = '#000';
     context.fillText(fullSecondsElapsed, 10, 28);
+    context[f] = '#f55';
+    for(let e of enemies) {
+        context.fillRect(e.x - 1, height - e.h, 3, e.h);
+    }
     requestAnimationFrame(drawingLoop);
 }
 drawingLoop();
