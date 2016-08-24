@@ -18,16 +18,19 @@ let d = document,
     context,
     gameLoop,
     drawingLoop,
+    enemyLoop,
     paused = false,
     newEnemyInterval = 3000,
     random=Math.random,
-    abs=Math.abs;
+    abs=Math.abs,
+    timeout=setTimeout,
+    interval=setInterval;
 
 
 onblur = () => { paused = true; }
 onfocus = () => { paused = false; }
 
-setInterval(() => {
+interval(() => {
     if(paused) return;
     fullSecondsElapsed += 1;
     if(fullSecondsElapsed % 5 == 0 && newEnemyInterval > 100) {
@@ -46,18 +49,20 @@ d.onkeyup = (e) => {
     keyStates[e.keyCode] = false;
 }
 
-setInterval(() => {
+enemyLoop = () => {
     if(paused) return;
     let randomV = random() * 2 + 2,
         randomH = random() * 100 + 100;
     if(random() < 0.5) {
-        enemies.push({ x: width + 1, h: randomH, v: -randomV });
+        enemies.push({ x: width, h: randomH, v: -randomV });
     } else {
-        enemies.push({ x: -1, h: randomH, v: randomV });
+        enemies.push({ x: 0, h: randomH, v: randomV });
     }
-}, newEnemyInterval);
+    timeout(enemyLoop, newEnemyInterval);
+};
+timeout(enemyLoop, newEnemyInterval);
 
-gameLoop = setInterval(() => {
+interval(() => {
     if(paused) return;
 
     if(keyStates[37]) {
@@ -105,7 +110,7 @@ gameLoop = setInterval(() => {
             }, 100);
         }
         e.x += e.v;
-        return -1 < e.x && e.x < width + 1;
+        return 0 < e.x && e.x < width;
     });
 }, 15);
 
