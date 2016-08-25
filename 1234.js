@@ -16,6 +16,7 @@ let d = document,
     fullSecondsElapsed = 0,
     keyStates = {},
     context,
+    gameLoop,
     drawingLoop,
     enemyLoop,
     paused = false,
@@ -60,7 +61,7 @@ enemyLoop = () => {
 };
 timeout(enemyLoop, newEnemyInterval);
 
-interval(() => {
+gameLoop = interval(() => {
     if(paused) return;
 
     if(keyStates[37]) {
@@ -102,11 +103,10 @@ interval(() => {
             (playerPosY >= height - e.h && playerPosY >= height - e.h)))
         {
             paused = true;
+            clearInterval(gameLoop);
             drawingLoop();
-            timeout(() => {
-                alert('You lost.');
-                location.reload();
-            }, 99);
+            alert('You lost.');
+            location.reload();
         }
         e.x += e.v;
         return 0 < e.x && e.x < width;
