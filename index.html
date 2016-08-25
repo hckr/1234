@@ -1,10 +1,1 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>1234-bytes-or-less game demo</title>
-</head>
-<body>
-    <script src="1234.min.js"></script>
-</body>
-</html>
+<canvas id="_" width="800" height="300" style="background:white;position:absolute;top:50%;left:50%;margin:-150px 0 0 -400px"></canvas><script>let n,t,o,e=document,i=800,u=300,c=400,l=100,h=20,a=i-h,r=u-h,d=h,s=0,x=0,y=10,m=.2,k=[],p=0,b={},v=!1,M=3e3,w=Math.random,C=Math.abs,g=setTimeout,q=setInterval;onblur=(()=>{v=!0}),onfocus=(()=>{v=!1}),q((()=>{v||(p+=1,p%5==0&&M>100&&(M-=100))}),1e3),e.body.style.background="#333",n=_.getContext("2d"),e.onkeydown=(n=>{b[n.keyCode]=!0}),e.onkeyup=(n=>{b[n.keyCode]=!1}),o=(()=>{if(g(o,M),!v){let n=2*w()+2,t=100*w()+100;w()<.5?k.push({x:i,h:t,v:-n}):k.push({x:0,h:t,v:n})}}),g(o,M),q((()=>{v||(b[37]&&(s-=1)<-10&&(s=-10),b[39]&&(s+=1)>10&&(s=10),s*=.9,c+=s,c<=d&&(c=d,s=-s),c>=a&&(c=a,s=-s),b[38]&&l==r&&(x=y),x-=m,l-=x,l>=r&&(l=r,x=.8*-x),k.filter((n=>{return C(n.x-c)<h&&(u-n.h-l<h&&Math.sqrt(C(n.x-c)+C(u-n.h-l))<h||l>=u-n.h&&l>=u-n.h)&&(v=!0,t(),g((()=>{alert("You lost."),location.reload()}),99)),n.x+=n.v,0<n.x&&n.x<i})))}),15),f="fillStyle",(t=(()=>{_.width=_.width,n[f]="#5f5",n.arc(c,l,h,0,2*Math.PI),n.fill(),n.font="24px monospace",n[f]="#000",n.fillText(p,10,28),n[f]="#f55";for(let o of k)n.fillRect(o.x-1,u-o.h,3,o.h);requestAnimationFrame(t)}))();</script>

@@ -38,7 +38,6 @@ interval(() => {
 }, 1000);
 
 d.body.style.background='#333';
-d.body.innerHTML=`<canvas id="_" width="${width}" height="${height}" style="background:white;position:absolute;top:50%;left:50%;margin:-${height/2}px 0 0 -${width/2}px"></canvas>`;
 context = _.getContext('2d');
 
 d.onkeydown = (e) => {

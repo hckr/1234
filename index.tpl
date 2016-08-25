@@ -1,0 +1,1 @@
+<canvas id="_" width="800" height="300" style="background:white;position:absolute;top:50%;left:50%;margin:-150px 0 0 -400px"></canvas><script>#SCRIPT#</script>

@@ -11,6 +11,6 @@
     "uglify-js": "github:mishoo/UglifyJS2#harmony"
   },
   "scripts": {
-    "minify": "./node_modules/uglify-js/bin/uglifyjs 1234.js -c -mt -o 1234.min.js && echo -n 'Size after minification: ' && cat 1234.min.js | wc -c"
+    "bundle": "cat index.tpl | perl -pe '$s=`node node_modules/uglify-js/bin/uglifyjs 1234.js -c -mt`;chomp $s;s/#SCRIPT#/$s/' > index.html && echo -n 'Size after minification: ' && cat index.html | wc -c"
   }
 }
